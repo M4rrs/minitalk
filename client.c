@@ -22,9 +22,9 @@ void	send_binary(int pid, char *str)
 				kill(pid, SIGUSR2);
 			usleep(50);
 			j++;
-			c >>=1;
+			c >>= 1;
 		}
-		i ++;
+		i++;
 	}
 }
 
