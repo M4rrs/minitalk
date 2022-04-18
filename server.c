@@ -1,16 +1,15 @@
 #include <signal.h>
 #include <unistd.h>
-#include <stdio.h>
+#include "libft/libft.h"
 
 void	receiver(int sig, siginfo_t *info, void *data)
 {
 	pid_t	pid;
 	static int		c;
-	int		i;
+	static int		i;
 
 	(void)data;
 	pid = info->si_pid;
-	i = 0;
 	if (sig == SIGUSR2)
 		c += 128;
 	if (i < 7)
@@ -18,7 +17,7 @@ void	receiver(int sig, siginfo_t *info, void *data)
 	i++ ;
 	if (i == 8)
 	{
-		printf("%c\n", c);
+		write(1, &c, 1);
 		c = 0;
 		i = 0;
 	}
@@ -38,7 +37,8 @@ int main()
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	pid = getpid();
-	printf("%d\n", pid);
+	ft_putnbr_fd(pid, 1);
+	ft_putchar_fd('\n', 1);
 	while (1)
 	{
 		pause();

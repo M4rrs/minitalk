@@ -1,7 +1,6 @@
 #include <unistd.h>
-#include "libft/ft_atoi.c"
-#include <stdio.h>
 #include <signal.h>
+#include "libft/libft.h"
 
 void	send_binary(int pid, char *str)
 {
@@ -37,7 +36,6 @@ int main(int argc, char **argv)
 		pid = ft_atoi(argv[1]);
 		str = argv[2];
 		send_binary(pid, str);
-		printf("pid = %d, str = %s\n", pid, str);
 	}
 	return (0);
 }
