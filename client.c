@@ -1,7 +1,15 @@
 #include <unistd.h>
 #include <signal.h>
-#include "libft/libft.h"
+#include "libft/ft_atoi.c"
+#include "libft/ft_putstr_fd.c"
 
+void	received_message(int sig)
+{
+	static int	received;
+	if (sig == SIGUSR1)
+		received++ ;
+	
+}
 void	send_binary(int pid, char *str)
 {
 	int i;
@@ -31,11 +39,14 @@ int main(int argc, char **argv)
 {
 	pid_t pid;
 	char *str;
-	if (argc > 1)
+	if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
 		str = argv[2];
+		ft_putstr_fd("Sending Signals.\n", 1);
 		send_binary(pid, str);
+		signal(SIGUSR1, received_message);
+		signal(SIGUSR2, received_message);
 	}
 	return (0);
 }
