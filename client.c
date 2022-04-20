@@ -1,11 +1,20 @@
-#include <unistd.h>
-#include <signal.h>
-#include "libft/ft_atoi.c"
-#include "libft/ft_putstr_fd.c"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/20 17:29:02 by nnorazma          #+#    #+#             */
+/*   Updated: 2022/04/20 17:29:03 by nnorazma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	send_binary(int pid, char c)
+#include "minitalk.h"
+
+static void	send_binary(int pid, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 8)
@@ -19,33 +28,46 @@ void	send_binary(int pid, char c)
 	}
 }
 
-void	send_message(int pid, char *str)
+static void	send_message(int pid, char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i++])
+	i = -1;
+	while (str[++i])
 		send_binary(pid, str[i]);
 	send_binary(pid, 0);
 }
 
-int main(int argc, char **argv)
+static void	response(int sig)
 {
-	pid_t pid;
-	char *str;
-	if (argc < 3)
+	if (sig == SIGUSR1)
 	{
-		ft_putstr_fd("No message inputted.\n", 1);
+		ft_putstr_fd("Message received.\n", 1);
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	pid_t				pid;
+	char				*str;
+	struct sigaction	sa;
+
+	if (argc == 2)
+	{
+		ft_putstr_fd("No message entered.\n", 1);
 		exit(EXIT_FAILURE);
 	}
 	else if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
 		str = argv[2];
-		ft_putstr_fd("Sending Signals.\n", 1);
+		ft_putstr_fd("Sent: ", 1);
+		ft_putnbr_fd(ft_strlen(str), 1);
+		ft_putchar_fd('\n', 1);
+		sa.sa_handler = response;
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 		send_message(pid, str);
-		signal(SIGUSR1, received_message);
-		signal(SIGUSR2, received_message);
 	}
 	return (0);
 }
