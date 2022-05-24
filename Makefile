@@ -8,10 +8,10 @@ LIB = libft
 all: server client
 
 server: lib
-	${CC} ${CCFLAGS} -o ${SERVER} -I ${INCLUDE} -Llibft -lft server.c
+	${CC} ${CCFLAGS} -o ${SERVER} -I ${INCLUDE} server.c -Llibft -lft 
 
 client: lib
-	${CC} ${CCFLAGS} -o ${CLIENT} -I ${INCLUDE} -Llibft -lft client.c
+	${CC} ${CCFLAGS} -o ${CLIENT} -I ${INCLUDE} client.c -Llibft -lft 
 	
 lib:
 	make re -C ${LIB}
