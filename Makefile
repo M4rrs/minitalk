@@ -1,6 +1,6 @@
 SERVER = server
 CLIENT = client
-INCLUDE = minitalk.h
+#INCLUDE = minitalk.h
 CC = gcc
 CCFLAGS = -Wall -Werror -Wextra
 LIB = libft
@@ -8,10 +8,10 @@ LIB = libft
 all: server client
 
 server: lib
-	${CC} ${CCFLAGS} -o ${SERVER} -I ${INCLUDE} server.c -Llibft -lft 
+	${CC} ${CCFLAGS} -o ${SERVER} server.c -Llibft -lft 
 
 client: lib
-	${CC} ${CCFLAGS} -o ${CLIENT} -I ${INCLUDE} client.c -Llibft -lft 
+	${CC} ${CCFLAGS} -o ${CLIENT} client.c -Llibft -lft 
 	
 lib:
 	make re -C ${LIB}
